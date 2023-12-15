@@ -7,7 +7,7 @@ Note: This package was developed using Python 3.11.5 on MacOS 13.5.1 (22G90) and
 
 Create a virtual environment in the project root: `python -m venv venv`
 
-Assuming you have (pip)[https://pip.pypa.io/en/stable/installation/] installed, activate the project's virtual environment:
+Assuming you have [pip](https://pip.pypa.io/en/stable/installation/) installed, activate the project's virtual environment:
 (with project root as the working directory) `. venv/bin/activate` 
 
 Install the project requirements: `pip install -r requirements.txt`
@@ -19,7 +19,7 @@ There are several variables that require configuration before you can run the do
 
 `OUTPUT_PATH` defaults to a subdirectory titled as the domain name within the working directory. Change it if you want the files to go elsewhere. This script will attempt to create the necessary folders for a new path but may encounter permissions errors.
 
-The final value that needs configuration is the `'cookie'` field on the `HEADERS` object. It can be extracted from the browser dev tools by copying a network request to the Substack domain you're interested in. Guide: https://stackoverflow.com/questions/55414344/chrome-network-request-does-not-show-cookies-tab-some-request-headers-copy-as
+The final value that needs configuration is the `'cookie'` field on the `HEADERS` object. It can be extracted from the browser dev tools by copying a network request to the Substack domain you're interested in. [Relevant Stack Overflow post.](https://stackoverflow.com/questions/55414344/chrome-network-request-does-not-show-cookies-tab-some-request-headers-copy-as)
 
 The usage of the remaining configuration values can be readily understood by reference to the code.
 
