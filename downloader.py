@@ -45,7 +45,7 @@ def download_posts(posts, output_path):
         soup = BeautifulSoup(response.content, 'html.parser')
         _ = [tag.extract() for tag in soup.findAll('script')]
 
-        print('Writing "{} to {}'.format(slug, full_path))
+        print('Writing "{}" to {}'.format(slug, full_path))
 
         with open(full_path, 'w') as file:
             file.write(str(soup))
