@@ -3,12 +3,14 @@ import os
 import random
 import requests
 import time
+import argparse
 
 from bs4 import BeautifulSoup
 
-DOMAIN = '<FILL THIS IN>'
-FULL_URL = 'https://{}'.format(DOMAIN)
-OUTPUT_PATH = './{}'.format(DOMAIN)
+DOMAIN = None
+FULL_URL = None
+OUTPUT_PATH = None
+
 PAGE_SIZE = 12
 SLEEP_SECONDS = 5
 
@@ -16,7 +18,7 @@ HEADERS = {
     'authority': DOMAIN,
     'accept': '*/*',
     'accept-language': 'en-US,en;q=0.9',
-    'cookie': '<FILL THIS IN>',
+    'cookie': '',
     'dnt': '1',
     'referer': '{}/archive?sort=new'.format(FULL_URL),
     'sec-ch-ua': '"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
@@ -102,7 +104,33 @@ def randomized_sleep():
     time.sleep(sleep_length)
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Substack Downloader",
+        epilog="See README.md for more information"
+    )
+    parser.add_argument('domain', help="domain of the site you want to archive, for instance `read.substack.com`")
+    parser.add_argument('cookie', help="path to a cookie file")
+    parser.add_argument('-o', '--output-path', dest='output', help="output path, defaults to ./{domain}")
+    parser.add_argument('-u', '--full-url', dest='url', help="full URL of the substack, defaults to https://{domain}")
+    parser.add_argument('-p', '--page-size', type=int, dest='page_size', default=PAGE_SIZE, help="page size for HTTP requests")
+    parser.add_argument('-s', '--sleep-time', type=int, dest='sleep_time', default=SLEEP_SECONDS, help="sleep time in seconds between requests")
+    return parser.parse_args()
+    
+    
 if __name__ == '__main__':
+    args = parse_args()
+
+    DOMAIN = args.domain
+    FULL_URL = args.url if args.url else 'https://{}'.format(args.domain)
+    OUTPUT_PATH = args.output if args.output else './{}'.format(args.domain)
+    with open(args.cookie, 'r') as cookie_file:
+        cookie = cookie_file.read().strip()
+        HEADERS['cookie'] = cookie
+
+    PAGE_SIZE = args.page_size
+    SLEEP_SECONDS = args.sleep_time
+
     # Ensure output directory exists before continuing.
     make_output_directory(OUTPUT_PATH)
 
