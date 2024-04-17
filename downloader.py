@@ -13,6 +13,7 @@ OUTPUT_PATH = None
 
 PAGE_SIZE = 12
 SLEEP_SECONDS = 5
+BEGIN_OFFSET = 0
 
 HEADERS = {
     'authority': DOMAIN,
@@ -56,8 +57,8 @@ def download_posts(posts, output_path):
 
 
 # Get a list of all posts for the given domain.
-def get_posts(domain, full_url, page_size):
-    offset = 0
+def get_posts(domain, full_url, page_size, begin_offset):
+    offset = begin_offset
     posts = []
 
     while True:
@@ -115,6 +116,7 @@ def parse_args():
     parser.add_argument('-u', '--full-url', dest='url', help="full URL of the substack, defaults to https://{domain}")
     parser.add_argument('-p', '--page-size', type=int, dest='page_size', default=PAGE_SIZE, help="page size for HTTP requests")
     parser.add_argument('-s', '--sleep-time', type=int, dest='sleep_time', default=SLEEP_SECONDS, help="sleep time in seconds between requests")
+    parser.add_argument('-b', '--begin-offset', type=int, dest='begin_offset', default=BEGIN_OFFSET, help="the beginning offset of articles to include")
     return parser.parse_args()
     
     
@@ -130,9 +132,10 @@ if __name__ == '__main__':
 
     PAGE_SIZE = args.page_size
     SLEEP_SECONDS = args.sleep_time
+    BEGIN_OFFSET = args.begin_offset
 
     # Ensure output directory exists before continuing.
     make_output_directory(OUTPUT_PATH)
 
-    posts = get_posts(DOMAIN, FULL_URL, PAGE_SIZE)
+    posts = get_posts(DOMAIN, FULL_URL, PAGE_SIZE, BEGIN_OFFSET)
     download_posts(posts, OUTPUT_PATH)
